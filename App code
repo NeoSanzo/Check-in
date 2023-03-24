@@ -1,0 +1,17 @@
+app = CheckInApp((0, 0))
+app.check_in("Alice", (1, 1))
+app.check_in("Bob", (2, 2))
+app.check_in("Charlie", (3, 3))
+app.check_in("Dave", (4, 4))
+app.check_in("Eve", (5, 5))  # This will trigger the creation of the first team and game
+app.check_in("Frank", (6, 6))
+app.check_in("Grace", (7, 7))
+app.check_in("Harry", (8, 8))
+app.check_in("Ivy", (9, 9))
+app.check_in("Jack", (10, 10))  # This will trigger the creation of the second team and game
+
+# The app will prompt for input on the winner of the first game
+# Suppose the user enters "1" to indicate that team 1 wins
+
+# The app will print the next game between the winner of the first game and the next team in the queue
+# Suppose the queue contains a
