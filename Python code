@@ -1,0 +1,70 @@
+import heapq
+
+class CheckIn:
+    def __init__(self, name, location):
+        self.name = name
+        self.location = location
+
+class Team:
+    def __init__(self, members):
+        self.members = members
+
+class Game:
+    def __init__(self, team1, team2):
+        self.team1 = team1
+        self.team2 = team2
+        self.winner = None
+
+class CheckInApp:
+    def __init__(self, location):
+        self.location = location
+        self.checkins = []
+        self.teams = []
+        self.games = []
+        self.queue = []
+
+    def check_in(self, name, location):
+        checkin = CheckIn(name, location)
+        self.checkins.append(checkin)
+        distance = self.calculate_distance(location)
+        heapq.heappush(self.queue, (distance, checkin))
+        self.check_queue()
+
+    def check_queue(self):
+        if len(self.queue) >= 5:
+            members = []
+            for _ in range(5):
+                _, checkin = heapq.heappop(self.queue)
+                members.append(checkin)
+            team = Team(members)
+            self.teams.append(team)
+            self.check_teams()
+
+    def check_teams(self):
+        if len(self.teams) >= 2:
+            team1 = self.teams[0]
+            team2 = self.teams[1]
+            game = Game(team1, team2)
+            self.games.append(game)
+            self.teams = self.teams[2:]
+            self.play_game(game)
+
+    def play_game(self, game):
+        print("Game between:")
+        print("Team 1:", [member.name for member in game.team1.members])
+        print("Team 2:", [member.name for member in game.team2.members])
+        winner = input("Enter the winner (1 or 2): ")
+        if winner == "1":
+            game.winner = game.team1
+            loser = game.team2
+        else:
+            game.winner = game.team2
+            loser = game.team1
+        if self.teams:
+            next_team = self.teams.pop(0)
+            loser.members = next_team.members
+            self.check_teams()
+
+    def calculate_distance(self, location):
+        # Use a simple Euclidean distance as an example
+        return ((location[0] - self.location[0]) ** 2 + (location[1] - self.location[1]) ** 2) ** 0.5
